@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.text-purple-600 {
+    color: #7c3aed; /* Ljubičasta boja */
+}
+html {
+    overflow-y: scroll;
+}
+
