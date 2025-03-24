@@ -5,9 +5,14 @@
 @endguest
 <?php
 
-$kategorije=config('mojconfig.kategorije');
+
 $vrste=config('mojconfig.vrste');
 $lokacije=config('mojconfig.lokacije');
+
+
+ 
+
+
 ?>
 
 <x-layout>

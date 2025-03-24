@@ -16,37 +16,9 @@
                 </div>
             @endif
 
-            <form class="max-w-md mx-auto my-5" method="GET" action="/objave">
-                <x-glavnifilter4>
 
 
-                </x-glavnifilter4>
-            </form>
-
-
-
-            <div class="grid gap-8 lg:grid-cols-1  sm:mx-10 md:mx-20 lg:mx-35  ">
-
-                @foreach($objave as $objava)
-
-                    <x-objavaoglas
-                        :id="$objava->id"
-                        :kategorija="$objava->kategorija"
-                        :starostInstrukcije="$objava->updated_at->diffForHumans()"
-                        :nazivInstrukcije="$objava->naziv"
-                        :opisInstrukcije="$objava->sadrzaj"
-                        :instruktor="$objava->user->username"
-                        :userId="$objava->user->id"
-                        :putanja="$objava->putanja"
-                    />
-
-                @endforeach
-
-
-            </div>
-            <div class="mt-6 flex justify-center">
-                {{ $objave->links() }}
-            </div>
+@livewire('lw-objave-filter')
 
         </div>
 
