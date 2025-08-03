@@ -1,29 +1,27 @@
 <x-layout>
 
-<section class=" dark:bg-gray-900 mt-20 sm:mt-10 bg-[#fdfaf5]">
-
-
-    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
-        @if (session('success'))
-            <div class="bg-green-500 text-white p-4 rounded mb-4">
-                {{ session('success') }}
-            </div>
-        @endif
-
-            @if (session('failure'))
-                <div class="bg-green-500 text-white p-4 rounded mb-4">
-                    {{ session('failure') }}
+    <section class="py-12 sm:py-16 bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen"> {{-- Prilagođen padding i pozadina --}}
+        <div class="px-4 mx-auto max-w-screen-xl lg:px-8">
+            @if (session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative mb-6" role="alert">
+                    <strong class="font-bold">Uspjeh!</strong>
+                    <span class="block sm:inline">{{ session('success') }}</span>
                 </div>
             @endif
 
+            @if (session('failure'))
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-6" role="alert">
+                    <strong class="font-bold">Greška!</strong>
+                    <span class="block sm:inline">{{ session('failure') }}</span>
+                </div>
+            @endif
 
             @livewire('lw-instrukcije-filter')
 
-    </div>
+        </div>
 
-</section>
+    </section>
 
     <x-instrukcijaCmodal></x-instrukcijaCmodal>
 
 </x-layout>
-

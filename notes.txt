@@ -1,0 +1,498 @@
+kad kreiram folder idem laravel new imeprojekta
+odem u taj folder i php artisan serve
+
+
+mogu napraviti model koji extends model i imam sve metode...mogu korisitii migration fajl tu dajem sve one atribute i onda samo migrate..m
+
+kad kreiram model ako zelim da koristi neku moju tabelu a ne da kreira ono sa mnozinom "s" onda idem u model i stavljam  npr protected $table = "instrukcije";
+isto tako primjeniti u migration fajlu
+u migartion fajlu stavljam sve atribute...ako zelim strani kljuc onda ide
+$table->foreignIdFor(\App\Models\Instruktor::class);
+
+MOZE SE DESIIT PROBLEM JER NEKAD ON KAD POKUSA MIGRIRATI ONDA AUTOMATSKI RACUNA ONO eng mnozina sa S pa ako se to desi onda se moze ovako kreirati strani kljuc
+
+           $table->unsignedBigInteger('instruktor_id'); // isti tip kao u `instruktori`
+            $table->foreign('instruktor_id')->references('id')->on('instruktori')->cascadeOnDelete();
+
+
+TAKOĐER KOD MIGRACIJE AKO IMAM NPR tabelu INSTRUKTOR I instrukcije i ako tabela instrukcije u sebi ima strani kljuc instruktor_id onda instruktor mora biti prvi kreiran tj njegova migracija mora biti prije kreirana ...to se moze manuelno promjeniti naziv
+
+za spremanje ide save
+
+u klasi kad kreiam ako zelim da mogu kreirati vise njih onda idem oov za atribute koji se mogu popunjavati
+ protected $fillable = ['naziv', 'cijena', 'instruktor'];
+
+factiories:koristi se za kreiranje u bazi podataka neki fejk elemenata
+php artisan tinker za izvrsavanje php koda u terminalu
+
+php artisan make:factory nestonesto
+
+ako imam vezu 1:N npr jedan instruktor ima vise instrukcija
+u class instrukcija imam funkciju koja se zove instruktor
+public function instruktor(){
+
+return $this->belongsTo(Instruktor::class)
+}
+
+
+i onda sad mogu pristupiti tom instrukotru $instrukcijaA=vratim....
+$instrukcijaA->instruktor
+_________________________________________________________________________________________
+veze M:N
+mogu u jednoj migraciji staviti vise schema tj mogu vise tabela odjednom da napravim
+
+kad hocu da mijenjam jel kaskadno ili ne onda idem u relation view
+
+
+onda i u migration fajlu za tu pivot tabelu treba dodat constraints
+  $table->foreignIdFor(Instrukcija::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Tag::class)->constrained()->cascadeOnDelete();
+
+
+korisit se funkcija koja vraca belongstomany
+
+
+kada zelim da napravi vezu npr imam tabelu tags i imam tabelu instrukcije i zelim da napravim sad neku vezu u tabeli instrukcije_tags
+mogu naci tag koji zelim npr tag1->instrukcije()-attach(ovdje id instukcije koju zelim da povezem)
+
+moze i obrnuto
+
+____________________
+vjezbe 13:
+eazy loading vs eager loading
+kad pozivam elemente koji su povezani i kojih ima puno onda eager loading
+kod lazy loadinga svaki put se salje upit
+
+____________________________-
+vjezbe 14:
+pagination
+to je kad imam puno elemenata za prikazati pa onda pokazujem dio po dio
+
+OVAKO JE BEZ pagination
+
+Route::get('/instrukcije', function () {
+
+    $instrukcije = Instrukcija::with('instruktor')->get();
+    return view('instrukcije', [
+
+        'instrukcije' => $instrukcije
+    ]);
+});
+
+sa pag samo bi bilo
+$instrukcije = Instrukcija::with('instruktor')->paginate();
+
+php artisan vendor:publish
+to koristim jer kad nesto povucem ili skinem preko composera i zelim da ih kopira u aplication folder da ih ja mogu mijenjati
+ovo se nalazi u views vendor
+a u appserviceprovider
+
+ public function boot(): void
+    {
+        //
+
+        Paginator::useBootstrapFive();
+    }
+
+
+ima simple paignate i to je bez izmedju brojeva samo previous i next
+ima i crusro pagiante ali to sjebe url al je dobro kod OGROKNIH BAZA
+
+_________________________________________________________________________________________
+vjezbe 15:
+seeders korisite se isto z apopulaciju baze
+
+php aritsan db:seed
+mogu praviti svoje seedere i onda ih odvojiti npr jedna za radnika jedan za korinsika itd
+
+_________________________________________________________________________________________
+
+vjezbe 16:
+
+forme i csrf-cross site request forgery...to je kad npr posaljem nekom fejk formu za promjenu lozinke i onda preko te forme posaljem request pravoj stranici i onda se njemu lozinka stvarno proomjeni jer je ostao logovan
+
+da bi se to sprjecilo koriste se tokeni koje se porede sa sesijom
+
+
+konvenciija je da se views podjele u foldere i da npr ako imam views instrukcija i instrukcije oni idu u folder instrukcije i pocetna tj ona koja pokazuje sve instrukcije se zove index a ona koja pokazuje jednu se zove show
+
+
+
+ako zelim da uklonim ono fillable protekciju onda mogu izbrisati i staviti guarded=[]
+
+
+$instrukcije = Instrukcija::with('instruktor')->simplePaginate(3);
+
+ako zelim da ih sortiram mogu staviti
+$instrukcije = Instrukcija::with('instruktor')->latest()->simplePaginate(3);
+
+
+_________________________________________________________________________________________
+vjezbe 17:
+validation
+
+kalsika ono required u formi  i onda tamo kod requsta Route
+   request()->validate([
+
+            'naziv' => ['required', 'min:3'],
+            'cijena' => ['required']
+        ]);
+
+
+
+za prikaz error poruka mogu koristiit error blade direktivu i onda ide ispit tog inputa i onda ako ima neka greska samo za taj input ona ga prikazuje npr
+
+        <div class="col">
+          <input type="number" class="form-control" placeholder="cijena" aria-label="cijena" name="cijena" id="cijena" required>
+
+          @error('cijena')
+              {{$message}}
+          @enderror
+        </div>
+
+
+
+vjezbe 18:
+edit update delete
+
+posto ono broeser zna samo get i post ako zelim da promjenim npr u patch onda u formi ispod stavim samo ovo
+  @method('PATCH')
+
+  {{$instrukcija->id}}
+  a moze i preko ["id"]
+
+
+  ako zelim da stavim formu unutar forme to ne zmoze ali mogu staviti link ili button i onda staviti parametar form i o7naciti formu koju zelim i onda tu form
+
+
+    $instrukcija = Instrukcija::findOrFail($id);
+
+
+return view salje specificni view a return redirect vraca ga na url
+     return redirect('/instrukcije/' . $instrukcija->id);
+
+
+ vjezbe 19:
+
+ JAKO JAKO BITNO routes
+
+Route::get('/instrukcije/{id}', function ($id) {
+
+
+    return view('instrukcije/show', ['instrukcija' => Instrukcija::find($id)]);
+});
+
+kad imam tako
+ako ne zelim da stalno pisem find($id)
+za taj wildcard $id sta je u {} koristim konvenicju da ide {instrukcija} zatim u funckiju isto instrukicja ali
+moram i napisati ispred koji tip ,a to je instukcija pa to izgleda ovako
+
+
+Route::get('/instrukcije/{instrukcija}', function (Instrukcija $instrukcija) {
+
+
+    return view('instrukcije/show', ['instrukcija' => $instrukcija]);
+});
+
+to automatski nadje instukciju koja se poklapa tj koja ima isti id
+ako zelim da nadje instrukciju npr po necemu drugom onda mogu
+
+Route::get('/instrukcije/{instrukcija:naziv}', function (Instrukcija $instrukcija) {
+
+
+    return view('instrukcije/show', ['instrukcija' => $instrukcija]);
+});
+
+
+KONTROLERI KLASE
+
+php artisan make:controller
+nalazi se u app-http-controllers
+
+ovo su funkcije u ovom kontroleru za instrukicju npr
+
+    public function index(){
+
+
+    }
+    public function create(){
+
+
+    }
+    public function show(){
+
+
+    }
+    public function store(){
+
+
+    }
+
+    public function edit(){
+
+
+    }
+    public function update(){
+
+
+    }
+
+    public function destroy(){
+
+
+    }
+
+    i jako je bitno da se koriste bas ovi nazivi
+
+
+    i onda ce biti umjesto ovog
+
+    Route::get('/instrukcije', function () {
+
+    $instrukcije = Instrukcija::with('instruktor')->latest()->simplePaginate(3);
+
+    return view('instrukcije/index', [
+
+        'instrukcije' => $instrukcije
+    ]);
+});
+
+
+bice ovo
+
+Route::get('/instrukcije', [InstrukcijaController::class, 'index']);
+
+
+TAKOĐER AKO IMAM NEKU RUTU KOJA SAMO RETURNA VIEW I NISTA VISE ONDA MOGU
+umjesto ovog
+
+Route::get('/about', function () {
+    return view('about');
+});
+
+mogu ovo:
+
+Route::view('/about', 'about');
+
+
+____
+komanda za listanje svih routa
+php artisan route:list
+php artisan route:list --except-vendor
+
+sad kad imam ovo
+
+Route::get('/instrukcije', [InstrukcijaController::class, 'index']);
+
+Route::post('/instrukcije', [InstrukcijaController::class, 'store']);
+
+Route::get('/instrukcije/create', [InstrukcijaController::class, 'create']);
+
+Route::get('/instrukcije/{instrukcija}', [InstrukcijaController::class, 'show']);
+
+Route::get('/instrukcije/{instrukcija}/edit', [InstrukcijaController::class, 'edit']);
+
+Route::patch('/instrukcije/{instrukcija}', [InstrukcijaController::class, 'update']);
+
+Route::delete('/instrukcije/{instrukcija}', [InstrukcijaController::class, 'destroy']);
+
+ako ne zelim da svaki put pisem InstrukcijaController
+
+mogu i ovako:
+
+Route::controller(InstrukcijaController::class)->group(function () {
+
+    Route::get('/instrukcije','index');
+
+    Route::post('/instrukcije','store');
+
+    Route::get('/instrukcije/create','create');
+
+    Route::get('/instrukcije/{instrukcija}','show');
+
+    Route::get('/instrukcije/{instrukcija}/edit','edit');
+
+    Route::patch('/instrukcije/{instrukcija}','update');
+
+    Route::delete('/instrukcije/{instrukcija}','destroy');
+});
+
+
+ALI NE MORAM CAK NI TO MOGU SAMO OVO
+
+Route::resource('instrukcije', InstrukcijaController::class);
+jer laravel automatski zna sta treba
+
+
+ako mi ne trebaju svi onda ovako
+Route::resource('instrukcije', InstrukcijaController::class,
+[
+    'except' => ['edit']
+]
+);
+
+
+
+vjezbe 20:
+ starter kits
+ izaberem breezec
+
+
+
+vjezbe 22:
+
+kod passworda mogu ono confirmed da bude confirmed ali naziv tog polja ide naziv_confirmation
+
+
+vjezbe 23 authorization
+
+
+vjezbe 24:
+
+slanje emailova
+
+prvo ide php artisan make:mail
+
+npr mail kad napravim instrukciju
+
+InstrukcijaMade
+nalazi se u app/mail
+
+    public function content(): Content
+    {
+        return new Content(
+            view: 'mails/InstrukcijaMade',
+        );
+    }
+
+
+Route::get('test', function () {
+
+    Mail::to('kenandurakovic.tm87@gmail.com')->send(new InstrukcijaMade());
+    return 'Radi poslano';
+});
+
+u env mogu promjeniti mail i naziv ime
+
+zatim u config mail
+
+vjezbe 25 queues:
+
+staro
+//        Mail::to($instrukcija->user)->send(new InstrukcijaMade($instrukcija));
+//         session()->flash('success', 'Instrukcija je uspješno unesena!');
+//         return redirect('/instrukcije');
+    novo:
+        Mail::to($instrukcija->user)->queue(new InstrukcijaMade($instrukcija));
+        session()->flash('success', 'Instrukcija je uspješno unesena!');
+        return redirect('/instrukcije');
+
+
+mogu napraviti sam job
+php artisan make:job
+
+
+i onda mogu ako je job npr TranslateInstrukcija
+mogu stavit
+TranslateInstrukcija::dispatch
+
+u handle pisem sta zelim da se desi
+
+takodjer svaku promeju moram resetirati ono workere
+
+php artisan queue:work
+
+
+_________________________________________________________
+
+kad sam sam radio i kad sam implementirao verification email za registrirane korisnike onda sam isao na laravel dokumentaciju
+tamo sve rute kopirao..morao sam dodati onaj view u auth koji je verify-email.blade.php
+treba isto dodati onaj event kod registracije usera
+
+
+kad hocu npr da uploadujem sliku
+
+
+za jobs moram mijenjat .env i queue fajlove i poreknuti workere
+
+
+
+
+/////
+26.12
+
+zelim dodati mogucnost dodavanja materijala za ucenje tj da svaki korisnik moze uploadovati i skidati fajlove
+
+
+28.12.
+
+zelim dodati mogucnost da korisnici objavljuju objave i da drugi korisnici mogu komentirati i odgovarati
+jedni durgima na komentare
+napravio 3 migracije
+
+
+
+_________________________________________________________
+12.3. zelim napraviti filtriranje spa tj da se ne mora stranica refreshati i volio bi napraviti chat sobe
+i opciju slanja privatih poruka
+
+
+...prvo trebam rijesiti filtriranje
+
+pravim livewire komponentu
+php artisan make:livewire instrukcijeFilter
+
+
+
+24.03. rijesio sam filtriranje...
+
+
+sad zelim napraviti chatanje za to mi treba reverb i websockets koliko sam skontao
+_________________________________________________________________________________________________
+20.05.
+nastavljam pravljenjem chata
+
+
+22.07 popravio problem gdje typing pise u pogresim chatovima... imam problem sto ako ne zelim koristiti pool poruke se prikazu kao ucitane tek kad pocnem pisat novu poruku
+ili kad ponovno kliknem submit
+
+
+24.07.sve sam redizajnirao sad izgleda dosta bolje,chat sam ubrzao implementirao eager loading
+sad zelim implementirat da mogu stare poruke pomocu paginacije ucitavat
+rijeseno
+
+
+25.07. sad zelim napraviti da mogu uploadovat fajlove u chatu
+
+implementirao sam fajl upload...morao sam mijenjati bazu... imao sam problema i sad php.ini tamo neke extension fileinfo je biozakomentiran
+
+i mijenjao sam submit da provjerava ako j eonaj losi fajl tajp da ga vrati u normalni
+
+30.7 chat sad radi sve ima i infinity scroll i dijeljenje fajlova i ima opciju da se pogledaju svi podijeljeni fajlovi
+
+sad zelim kreirati sobe tj grupe za chatanje
+
+
+prvo moram kreirati tabelu rooms
+
+
+31.07.dodao sam sobe radi sve osim typing indicatora treba implementirati da se moze kliknuti na spisak clanova i da admin moze
+izbaciit
+clana ili dodati mu admina
+trenutno samo vlasnik moze izbrisati grupu sto je okej vjv RIJESENO
+... zelim dodati da bude notofikacija za poruke kao i kod 1:1 chatova RIJESENO
+...dodati kod sobe vise elemenata kao sto su opis, i kategorija i profilna slika i privatnost
+trebam u room_user tabelu dodati is_admin RIJESENO
+
+
+
+ZAVRSIO KOMPLET CHAT I INDEX STRANICU ZA SOBE
+
+
+02.08 ZELIM POKUSAT NAPRAVITI VIDEO I VOICE CALLS
+
+
+
+
+
+

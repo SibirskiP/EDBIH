@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Instrukcija;
 use App\Models\Materijal;
+use App\Models\Objava;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
@@ -49,11 +50,13 @@ class UserController extends Controller
         }
         $instrukcije = Instrukcija::where('user_id', $user->id)->with('user')->paginate(10);
         $materijali = Materijal::where('user_id', $user->id)->with('user')->paginate(10);
+        $objave=Objava::where('user_id',$user->id)->with('user')->paginate(10);
 
         return view('instruktori/show', [
             'instruktor' => $user,
             'instrukcije' => $instrukcije,
-            'materijali' => $materijali
+            'materijali' => $materijali,
+            'objave' => $objave
         ]);
 
 

@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,14 @@ use Illuminate\Support\Facades\Auth;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/test2', function () {
+    return view('test');
+});
+
+
+
+
+
 Route::get('test', function () {
 
 
@@ -36,6 +45,19 @@ Route::get('test', function () {
 
     \App\Jobs\TranslateInstrukcija::dispatch($instrukcija);
 });
+
+use App\Http\Controllers\ChatController;
+
+//Route::get('/chat', [ChatController::class, 'show']);
+Route::post('/send-message', [ChatController::class, 'sendMessage']);
+
+Route::get('/broadcast',function(){
+
+
+    broadcast(new \App\Events\Example(User::find(1)));
+
+});
+
 
 Route::get('/email/verify', function () {
     if (auth()->user()->hasVerifiedEmail()) {
@@ -66,6 +88,8 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('welcome');
 });
+
+Route::get('/chat',[ChatController::class,'index']);
 
 Route::get('/instrukcije',[\App\Http\Controllers\InstrukcijaController::class,'index'])->middleware(['auth', 'verified']);
 Route::get('/instrukcije/{instrukcija}', [InstrukcijaController::class, 'show'])->middleware(['auth', 'verified']);
@@ -140,6 +164,13 @@ Route::get('/forgot-password', function () {
 
 
 
+//novo dodano za sobe
+
+Route::get('sobe',[\App\Http\Controllers\RoomController::class,'index'])->name('sobe.index')->middleware(['auth', 'verified']);
+Route::get('sobe/{soba}',[\App\Http\Controllers\RoomController::class,'show'])->middleware(['auth', 'verified']);
+
+
+
 use Illuminate\Support\Facades\Password;
 
 Route::post('/forgot-password', function (Request $request) {
@@ -159,7 +190,7 @@ Route::get('/reset-password/{token}', function (string $token) {
     return view('auth.reset-password', ['token' => $token]);
 })->middleware('guest')->name('password.reset');
 
-use App\Models\User;
+
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
 
@@ -191,3 +222,20 @@ Route::post('/reset-password', function (Request $request) {
 })->middleware('guest')->name('password.update');
 
 
+
+
+//02.08
+
+Route::post('/video-call/start', [App\Http\Controllers\VideoController::class, 'start'])
+    ->middleware('auth');
+
+use App\Http\Controllers\DailyWebhookController;
+
+Route::post('/daily/webhook', [DailyWebhookController::class, 'handleWebhook']);
+// U routes/web.php
+
+
+Route::get('/video-call', function () {
+    // Ovo će biti vaša stranica za video poziv
+    return view('video-call');
+})->name('video-call');

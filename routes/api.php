@@ -43,3 +43,5 @@ Route::middleware('auth:sanctum')->get('/test', function (Request $request) {
 });
 
 
+
+Route::post('/daily/webhook', [App\Http\Controllers\DailyWebhookController::class, 'handleWebhook']);

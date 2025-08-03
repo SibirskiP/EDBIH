@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Objava;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ObjavaController extends Controller
@@ -58,11 +59,17 @@ class ObjavaController extends Controller
 
 
     public function show(Objava $objava){
-
+        if(\Auth::guest()){
+            return redirect('/login');
+        }
         $komentari=$objava->komentari;
 
+        $user=User::with('objave')->where('id',$objava->user_id)->first();
+        $kategorije = $user->instrukcije()->distinct()->pluck('kategorija');
 
-        return view('objave.show', compact('objava','komentari'));
+        return view('objave.show', ['objava'=>$objava,'komentari'=>$komentari,'kategorije'=>$kategorije]);
+
+
     }
 
 
