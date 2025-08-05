@@ -1,7 +1,7 @@
 <div>
     <div class="mx-auto max-w-screen-lg text-center  mt-12">
         <h2 class="mb-4 text-4xl lg:text-5xl tracking-tight font-extrabold text-slate-800 dark:text-white">
-            Pronađi svog <span class="text-blue-600">Instruktora</span>
+            Pretražite ostale <span class="text-blue-600">Korisnike</span>
         </h2>
         <p class="font-light text-slate-500 sm:text-xl dark:text-slate-400 max-w-2xl mx-auto">
             Istražite našu bazu stručnih instruktora i pronađite idealnog mentora za vaše potrebe.

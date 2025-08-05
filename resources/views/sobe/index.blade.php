@@ -22,6 +22,4 @@
 
     </section>
 
-    <x-objavaCmodal></x-objavaCmodal>
-
 </x-layout>

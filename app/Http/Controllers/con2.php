@@ -140,30 +140,10 @@ class ChatComponent extends Component
         $this->loginID = Auth::id();
         $this->sender_id = Auth::id();
 
-        $this->loadActiveUsers(); // Učitaj korisnike s kojima već postoji razgovor
+        $this->loadActiveUsers();
         $this->loadRooms(); // Učitaj sobe
 
-        // NOVO: Logika za selektiranje korisnika proslijeđenog preko URL-a
-        if ($this->userIdToSelect && $this->userIdToSelect != Auth::id()) {
-
-            // Provjeri da li korisnik već postoji u listi aktivnih razgovora
-            if (!$this->users->contains('id', $this->userIdToSelect)) {
-                $userToPrepend = User::find($this->userIdToSelect);
-                if ($userToPrepend) {
-                    // Dodaj default vrijednosti da se objekat podudara sa ostalima u kolekciji
-                    $userToPrepend->last_message_at = now()->toDateTimeString(); // Stavljamo trenutno vrijeme da bude na vrhu liste
-                    $userToPrepend->unread_messages_count = 0;
-
-                    // Dodaj novog korisnika na početak liste
-                    $this->users->prepend($userToPrepend);
-                }
-            }
-
-            // Selektiraj korisnika
-            $this->selectUser($this->userIdToSelect);
-
-        } elseif ($this->users->isNotEmpty()) {
-            // Ako nije proslijeđen ID, ponašaj se kao i prije: selektiraj prvog korisnika
+        if ($this->users->isNotEmpty()) {
             $this->selectUser($this->users->first()->id);
         }
     }
@@ -829,18 +809,4 @@ class ChatComponent extends Component
             $this->dispatch('user-is-typing', name: $payload['userName']);
         }
     }
-
-
-    // NOVO: Property za primanje ID-a iz URL-a
-    public $userIdToSelect = null;
-
-    // NOVO: Mapiranje query stringa na property
-    // Ovo govori Livewire-u: "Poveži 'userId' iz URL-a sa propertijem '$userIdToSelect'"
-    protected $queryString = [
-        'userIdToSelect' => ['as' => 'userId', 'except' => ''],
-    ];
-
 }
-
-
-

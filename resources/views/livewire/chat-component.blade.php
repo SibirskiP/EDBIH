@@ -823,7 +823,17 @@
                     @forelse($availableUsersToAdd as $user)
                         <div class="flex items-center justify-between p-2 hover:bg-slate-50">
                             <span>{{ $user->username }}</span>
-                            <button wire:click="addUserToRoom({{ $user->id }})" class="bg-green-500 text-white px-3 py-1 text-xs rounded-md hover:bg-green-600">Dodaj</button>
+                            @if(in_array($user->id, $sentInvitations))
+                                {{-- Ako je pozivnica poslana, prikaži sivi gumb "Poslano" --}}
+                                <button disabled class="bg-gray-400 text-white px-3 py-1 text-xs rounded-md cursor-not-allowed">
+                                    Poslano
+                                </button>
+                            @else
+                                {{-- Inače, prikaži zeleni gumb "Dodaj" --}}
+                                <button wire:click="addUserToRoom({{ $user->id }})" class="bg-green-500 text-white px-3 py-1 text-xs rounded-md hover:bg-green-600">
+                                    Dodaj
+                                </button>
+                            @endif
                         </div>
                     @empty
                         <p class="text-slate-500 text-center p-4">Nema korisnika za dodavanje ili se podudaraju sa pretragom.</p>
@@ -835,6 +845,7 @@
             </div>
         </div>
     @endif
+
 
     {{-- Novi Modal za članove grupe --}}
     @if($showMembersModal && $selectedRoom)

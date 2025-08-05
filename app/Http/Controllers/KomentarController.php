@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Komentar;
+use App\Models\Obavijest;
+use App\Models\Objava;
 use Illuminate\Http\Request;
 
 class KomentarController extends Controller
@@ -22,6 +24,19 @@ class KomentarController extends Controller
             'user_id'=>auth()->id(),
             'objava_id'=>request('objava_id'),
         ]);
+
+        $objava=Objava::find(request('objava_id'));
+        $primatelj=$objava->user_id;
+
+        Obavijest::create([
+            'korisnik_id' => $primatelj,
+            'naslov' => 'Komentar na objavu: ' . $objava->naziv,
+            'sadrzaj' => 'Dobili ste komentar:' . request('sadrzaj') . '.',
+            // Možete dodati i link na obavijest u Blade view-u za akcije
+        ]);
+
+
+
 
        return redirect()->back()->with('success', 'Komentar uspješno kreiran!');
     }

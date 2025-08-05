@@ -31,7 +31,7 @@
                 Sve za <span class="text-blue-600">edukaciju</span> na jednom mjestu
             </h1>
             <p class="mt-6 text-lg sm:text-xl leading-8 text-slate-700 max-w-2xl mx-auto">
-                Pronađite ili objavite instrukcije, kurseve i materijale za učenje i još mnogo toga.
+                Pronađite ili objavite instrukcije, kurseve i materijale za učenje, pridružite se drugim članovima u sobama za učenje i još mnogo toga.
             </p>
             <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                 @guest
@@ -134,7 +134,7 @@
                         2
                     </div>
                     <h3 class="text-xl font-semibold text-slate-800 mb-3">Zakaži instrukcije</h3>
-                    <p class="text-slate-600 text-base">Jednostavno dogovorite termin i lokaciju za vaše instrukcije direktno s instruktorom.</p>
+                    <p class="text-slate-600 text-base">Jednostavno dogovorite termin i lokaciju (uživo ili online) za vaše instrukcije direktno s instruktorom.</p>
                 </div>
 
                 {{-- Korak 3 --}}
@@ -142,9 +142,38 @@
                     <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600 text-white text-2xl font-bold mb-6 shadow-lg">
                         3
                     </div>
-                    <h3 class="text-xl font-semibold text-slate-800 mb-3">Uči i napreduj</h3>
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">Iskoristi resurse</h3>
                     <p class="text-slate-600 text-base">Iskoristite resurse i podršku da unaprijedite svoje znanje i vještine.</p>
                 </div>
+
+                {{-- Korak 4 --}}
+                <div class="flex flex-col items-center text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600 text-white text-2xl font-bold mb-6 shadow-lg">
+                        4
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">Uči zajedno s drugima</h3>
+                    <p class="text-slate-600 text-base">Komunicirajte i učite zajedno s drugim članovima u sobama za učenje</p>
+                </div>
+
+                {{-- Korak 5 --}}
+                <div class="flex flex-col items-center text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600 text-white text-2xl font-bold mb-6 shadow-lg">
+                        5
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">Postavi pitanja</h3>
+                    <p class="text-slate-600 text-base">Postavi pitanja ili traži pomoć od drugih u sekcijama za objave</p>
+                </div>
+
+
+                {{-- Korak 6 --}}
+                <div class="flex flex-col items-center text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600 text-white text-2xl font-bold mb-6 shadow-lg">
+                        6
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">Istražite</h3>
+                    <p class="text-slate-600 text-base">Istražite, objavite ili komentarišite novosti iz svijeta edukacije</p>
+                </div>
+
             </div>
         </div>
     </section>
@@ -165,10 +194,6 @@
     </section>
 
     {{-- Podnožje (Footer) - Preuzeto iz main-layout-blade --}}
-    <footer class="bg-slate-100 py-6 border-t border-slate-200 text-center text-slate-600 text-sm shadow-inner">
-        <div class="max-w-screen-xl mx-auto px-4">
-            <p>&copy; {{ date('Y') }} Kenan Durakovic. Sva prava pridržana.</p>
-        </div>
-    </footer>
+
 
 </x-layout>

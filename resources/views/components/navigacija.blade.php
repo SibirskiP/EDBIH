@@ -112,7 +112,7 @@
                     <a href="/instrukcije" class="nav-link-underline block py-2 px-3 {{ request()->is('instrukcije') ? 'text-blue-600 font-semibold active' : 'text-slate-700' }} rounded-lg md:bg-transparent hover:text-blue-600 md:hover:text-blue-600 md:p-0 transition-colors duration-200">Instrukcije</a>
                 </li>
                 <li>
-                    <a href="/instruktori" class="nav-link-underline block py-2 px-3 {{ request()->is('instruktori') ? 'text-blue-600 font-semibold active' : 'text-slate-700' }} rounded-lg md:bg-transparent hover:text-blue-600 md:hover:text-blue-600 md:p-0 transition-colors duration-200">Instruktori</a>
+                    <a href="/instruktori" class="nav-link-underline block py-2 px-3 {{ request()->is('instruktori') ? 'text-blue-600 font-semibold active' : 'text-slate-700' }} rounded-lg md:bg-transparent hover:text-blue-600 md:hover:text-blue-600 md:p-0 transition-colors duration-200">Korisnici</a>
                 </li>
                 <li>
                     <a href="/materijali" class="nav-link-underline block py-2 px-3 {{ request()->is('materijali') ? 'text-blue-600 font-semibold active' : 'text-slate-700' }} rounded-lg md:bg-transparent hover:text-blue-600 md:hover:text-blue-600 md:p-0 transition-colors duration-200">Materijali</a>
@@ -150,7 +150,7 @@
             <a href="/instrukcije" class="block py-3 px-4 text-lg {{ request()->is('instrukcije') ? 'text-blue-600 font-semibold' : 'text-slate-700' }} rounded-lg hover:bg-slate-100 transition-colors duration-200">Instrukcije</a>
         </li>
         <li>
-            <a href="/instruktori" class="block py-3 px-4 text-lg {{ request()->is('instruktori') ? 'text-blue-600 font-semibold' : 'text-slate-700' }} rounded-lg hover:bg-slate-100 transition-colors duration-200">Instruktori</a>
+            <a href="/instruktori" class="block py-3 px-4 text-lg {{ request()->is('instruktori') ? 'text-blue-600 font-semibold' : 'text-slate-700' }} rounded-lg hover:bg-slate-100 transition-colors duration-200">Korisnici</a>
         </li>
         <li>
             <a href="/materijali" class="block py-3 px-4 text-lg {{ request()->is('materijali') ? 'text-blue-600 font-semibold' : 'text-slate-700' }} rounded-lg hover:bg-slate-100 transition-colors duration-200">Materijali</a>

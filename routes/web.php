@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\InstrukcijaController;
 use App\Http\Controllers\KomentarController;
+use App\Http\Controllers\ObavijestController;
 use App\Http\Controllers\ObjavaController;
 use App\Http\Controllers\OdgovorController;
 use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\RoomInvitationController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UpitController;
 use App\Http\Controllers\UserController;
@@ -239,3 +241,16 @@ Route::get('/video-call', function () {
     // Ovo će biti vaša stranica za video poziv
     return view('video-call');
 })->name('video-call');
+
+
+
+Route::post('/notifications/{obavijest}/mark-as-read', [ObavijestController::class, 'markAsRead'])
+    ->middleware('auth')
+    ->name('notifications.markAsRead');
+
+
+// Rute za pozivnice
+Route::middleware('auth')->group(function () {
+    Route::post('/room-invitations/{roomInvitation}/accept', [RoomInvitationController::class, 'accept'])->name('room-invitations.accept');
+    Route::post('/room-invitations/{roomInvitation}/decline', [RoomInvitationController::class, 'decline'])->name('room-invitations.decline');
+});

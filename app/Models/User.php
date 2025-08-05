@@ -62,6 +62,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Room::class)->withPivot('is_admin', 'last_read_at')->withTimestamps();
     }
 
+    public function obavijesti()
+    {
+        return $this->hasMany(Obavijest::class, 'korisnik_id');
+    }
+
 
 
 }
